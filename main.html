@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2학년1반</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+      display: block;
+      margin: 0 auto;
+      background-image: url('https://lh3.googleusercontent.com/pw/ABLVV87jEyUH6mXIqD_2yaAaqhH3J_gxPaZRc3C_7s1-0OXiUORpCbhEqD5HD-UQoYryolhFXoOVa9iFxNMD-eO5Kb5NQmLVzXpfhcdbhZPO6Kq3F9cWURw2EPisQGwwoy0wgOHLyWh78O48NMeCE-qNzQrT=w561-h348-s-no-gm?authuser=0'); background-size: cover; display: block;
+    }
+  </style>
+</head>
+<body>      
+    <img id="rockImage" src="https://lh3.googleusercontent.com/pw/ABLVV86BX98nGc1DL10PNjLLyynezLaVG7VgcnNEYLfe9psSyu71GenJk3KP7lUrM61a45Pl06srCbYBmjkOc7rB0_5kWoQQ17hi84lMfT3Vl43ppkA3P2uUjwYFA9ka9arV1ZXrznBWykH-6h5JKpeonEKC=w258-h288-s-no-gm?authuser=0" style="display: none;">
+  <canvas id="gameCanvas" width="600" height="600"></canvas>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const player = {
+      x: canvas.width / 2,
+      y: canvas.height - 30,
+      width: 20,
+      height: 20,
+      speed: 5,
+      dx: 0,
+      dy: 0
+    };
+
+    let obstacles = [];
+    let gameOver = false;
+
+    function drawPlayer() {
+      ctx.fillStyle = 'blue';
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
+
+    function drawObstacles() {
+      ctx.fillStyle = 'black';
+      ctx.font = '20px Arial';
+      for (let obstacle of obstacles) {
+        ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+        ctx.fillStyle = 'white'; // 텍스트 색상을 빨간색으로 변경
+        ctx.fillText(obstacle.value, obstacle.x + 2, obstacle.y + 21);
+        ctx.fillStyle = 'black';
+      }
+    }
+
+    function movePlayer() {
+      player.x += player.dx;
+      player.y += player.dy;
+
+      if (player.x < 0) {
+        player.x = 0;
+      }
+      if (player.x > canvas.width - player.width) {
+        player.x = canvas.width - player.width;
+      }
+      if (player.y < 0) {
+        player.y = 0;
+      }
+      if (player.y > canvas.height - player.height) {
+        player.y = canvas.height - player.height;
+      }
+    }
+    num=0
+    texts=[
+        '솔직히 매일, 매일 방향잡아주고 다 하잖아 ',
+        '굳이 너희꺼  기다릴 필요는 없어... ',
+        '진짜 얼만큼 기다려야 하는거니??...',
+        '일단 지금까지한거보내봥',
+        '절대 이걸로 대학을 결정하는건 아니야~~',
+        '쌤 실눈뜨고 쓰는거니까 가만해^^',
+        '학기 말 담임교사와 약간의갈등이 있었음^^',
+        '오늘 내야한데이',
+        '(너의 생기부)재활용해야해',
+        '쌤 진짜 포기 할까...0.0',
+        '진짜 선생님 화날것 같다',
+        '쌤이 눈 수술을해서',
+        '나 그냥 빈칸해 ?? ㅋㄴㄴㄴㄴㄴ',
+        '🤍감자같은 2학년🤍',
+        '제발 생각하고 행동하세요.',
+        '얘들아 내용추가 함부로 하지말고',
+    ]
+    function generateObstacle() {
+      const width = 410;
+      num=num+Math.floor(Math.random() * 3)+1
+      const obstacle1 = {
+        x: Math.round(Math.random()*6)/6 * (canvas.width - width),
+        y: 0,
+        width: width,
+        height: 30,
+        value: texts[num%texts.length]
+      };
+ 
+      obstacles.push(obstacle1);
+    }
+
+    function moveObstacles() {
+      for (let obstacle of obstacles) {
+        obstacle.y += 1.8;
+        if (obstacle.y > canvas.height) {
+          obstacles.shift();
+        }
+        if (
+          player.x < obstacle.x + obstacle.width &&
+          player.x + player.width > obstacle.x &&
+          player.y < obstacle.y + obstacle.height &&
+          player.y + player.height > obstacle.y
+        ) {
+          gameOver = true;
+          alert('이번시간마치고 선생님한테와봐');
+          document.location.reload();
+        }
+      }
+    }
+
+    function draw() {
+      if (!gameOver) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawPlayer();
+        drawObstacles();
+        movePlayer();
+        moveObstacles();
+        requestAnimationFrame(draw);
+      }
+    }
+
+    document.addEventListener('keydown', function (event) {
+      const key = event.key.toLowerCase();
+      if (key === 'a') {
+        player.dx = -player.speed;
+      } else if (key === 'd') {
+        player.dx = player.speed;
+      } else if (key === 'w') {
+        player.dy = -player.speed;
+      } else if (key === 's') {
+        player.dy = player.speed;
+      }
+    });
+
+    document.addEventListener('keyup', function (event) {
+      const key = event.key.toLowerCase();
+      if (key === 'a' || key === 'd') {
+        player.dx = 0;
+      } else if (key === 'w' || key === 's') {
+        player.dy = 0;
+      }
+    });
+
+    setInterval(generateObstacle, 1700);
+    draw();
+  </script>
+</body>
+</html>
