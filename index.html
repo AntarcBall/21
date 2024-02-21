@@ -66,7 +66,7 @@
         player.y = canvas.height - player.height;
       }
     }
-    num=Math.floor(Math.random()*texts.length)
+    
     texts=[
         '솔직히 매일, 매일 방향잡아주고 다 하잖아 ',
         '굳이 너희꺼  기다릴 필요는 없어... ',
@@ -102,6 +102,7 @@
         '이게 절대 습관이되면 안되는거야',
       
     ]
+    num=Math.floor(Math.random()*texts.length)
     function generateObstacle() {
       const width = 410;
       num=num+Math.floor(Math.random() * 3)+1
