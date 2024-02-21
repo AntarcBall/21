@@ -66,7 +66,7 @@
         player.y = canvas.height - player.height;
       }
     }
-    num=0
+    num=Math.floor(Math.random()*texts.length)
     texts=[
         '솔직히 매일, 매일 방향잡아주고 다 하잖아 ',
         '굳이 너희꺼  기다릴 필요는 없어... ',
@@ -89,6 +89,11 @@
         '없으면 자율 그냥 넣는다 1358바이트로 ~ ',
         '. 쌤도 새학기 업무 해야하니까',
         '진짜 시간 많이 준것 같거든!!',
+        '이건 미라클 전형이 아니야',
+        '수정이라는게 뭘 말하는거징 ..9,9',
+        '진지하게 집가서 공부해',
+        ' 차라리 수학 10문제 더푸는게 맞아 진짜',
+        '븐명 약속했다!',
     ]
     function generateObstacle() {
       const width = 410;
